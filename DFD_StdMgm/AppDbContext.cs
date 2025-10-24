@@ -25,10 +25,12 @@ public class AppDbContext : DbContext
             optionsBuilder.UseSqlServer("Server=localhost,1433;Database=StudentMgm;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;");
         }
     }
-
+    
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
+    public DbSet<Professor> Professors { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +39,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Student>().ToTable("Student");
         modelBuilder.Entity<Course>().ToTable("Course");
         modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
+        modelBuilder.Entity<Professor>().ToTable("Professor");
+        modelBuilder.Entity<Department>().ToTable("Department");
         
         base.OnModelCreating(modelBuilder);
         
@@ -44,8 +48,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Student>().HasKey(s => s.StudentID);
         modelBuilder.Entity<Course>().HasKey(c => c.CourseID);
         modelBuilder.Entity<Enrollment>().HasKey(e => e.EnrollmentId);
-        
-        
+        //add professor department
+        modelBuilder.Entity<Professor>().HasKey(p => p.ProfessorID);
+        modelBuilder.Entity<Department>().HasKey(d => d.DepartmentID);
         // Create table relatioship 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
@@ -56,7 +61,25 @@ public class AppDbContext : DbContext
             .HasOne(e => e.Course)
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseId);
-        
+        //Professor departement relationship
+        modelBuilder.Entity<Professor>()
+            .HasOne(p => p.Department)
+            .WithMany(d => d.Professors)
+            .HasForeignKey(p => p.DepartmentID);
+
+        modelBuilder.Entity<Course>()
+            .HasOne(c => c.Professor)
+            .WithMany(p => p.Courses)
+            .HasForeignKey(c => c.ProfessorID)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Course>()
+            .HasOne(c => c.Department)
+            .WithMany(d => d.Courses)
+            .HasForeignKey(c => c.DepartmentID)
+            .IsRequired(false);
+            
+            
         // insert base data in database
         modelBuilder.Entity<Student>().HasData(
             new Student { StudentID = 1, StudentName = "Alice Johnson", StudentAge = 20 },
@@ -90,7 +113,18 @@ public class AppDbContext : DbContext
             new Enrollment { EnrollmentId = 13, StudentId = 4, CourseId = 2 },
             new Enrollment { EnrollmentId = 14, StudentId = 4, CourseId = 3 }
         );
-        
-        
+        modelBuilder.Entity<Department>().HasData(
+            new Department { DepartmentID = 1, DepartmentName = "Computer Science Department"},
+            new Department { DepartmentID = 2, DepartmentName = "Biology Department"},
+            new Department { DepartmentID = 3, DepartmentName = "Physics Department"},
+            new Department { DepartmentID = 4, DepartmentName = "Chemistry Department"}
+
+        );
+        modelBuilder.Entity<Professor>().HasData(
+            new Professor { ProfessorID = 1, DepartmentID = 3, ProfessorName = "Anders Sand", ProfessorTitle = "Teacher" },
+            new Professor { ProfessorID = 2, DepartmentID = 4, ProfessorName = "Benny Larsen", ProfessorTitle = "Teacher" },
+            new Professor { ProfessorID = 3, DepartmentID = 1, ProfessorName = "Christine Smith", ProfessorTitle = "Teacher" }
+        );
+
     }
 }
