@@ -4,6 +4,7 @@ using DFD_StdMgm;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DFD_StdMgm.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251024073137_CreateModelsAndRelationships")]
+    partial class CreateModelsAndRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,28 +100,6 @@ namespace DFD_StdMgm.Migrations
                     b.HasKey("DepartmentID");
 
                     b.ToTable("Department", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            DepartmentID = 1,
-                            DepartmentName = "Computer Science Department"
-                        },
-                        new
-                        {
-                            DepartmentID = 2,
-                            DepartmentName = "Biology Department"
-                        },
-                        new
-                        {
-                            DepartmentID = 3,
-                            DepartmentName = "Physics Department"
-                        },
-                        new
-                        {
-                            DepartmentID = 4,
-                            DepartmentName = "Chemistry Department"
-                        });
                 });
 
             modelBuilder.Entity("DFD_StdMgm.Models.Enrollment", b =>
@@ -245,7 +226,7 @@ namespace DFD_StdMgm.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfessorTitle")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProfessorID");
@@ -253,29 +234,6 @@ namespace DFD_StdMgm.Migrations
                     b.HasIndex("DepartmentID");
 
                     b.ToTable("Professor", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ProfessorID = 1,
-                            DepartmentID = 3,
-                            ProfessorName = "Anders Sand",
-                            ProfessorTitle = "Teacher"
-                        },
-                        new
-                        {
-                            ProfessorID = 2,
-                            DepartmentID = 4,
-                            ProfessorName = "Benny Larsen",
-                            ProfessorTitle = "Teacher"
-                        },
-                        new
-                        {
-                            ProfessorID = 3,
-                            DepartmentID = 1,
-                            ProfessorName = "Christine Smith",
-                            ProfessorTitle = "Teacher"
-                        });
                 });
 
             modelBuilder.Entity("DFD_StdMgm.Models.Student", b =>
