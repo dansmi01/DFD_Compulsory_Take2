@@ -39,9 +39,9 @@ This last migration where a more traditoinal stastebased migration where i add t
 These are set ate the first monday of september. this was done by making firs an empty migration and the adding the specific changes to the teable row which where null. 
 After the migration the following where displayed in the database.
 
-<img width="632" height="587" alt="image" src="https://github.com/user-attachments/assets/36d3dd04-835f-47c5-821f-7072669b8d04" />
+<img width="481" height="597" alt="image" src="https://github.com/user-attachments/assets/20c8142e-5bf6-4f10-b0d3-64fa4ad430da" />
 
-Since the focus of the assignemn where to display migratioin i didnt focus on the date format. 
+Since the focus of the assignemn where to display migratioin i didnt focus on the date format, also the reason the grade is null is because the isea is it dist is when a student is done with the course the should be added a grade. 
 
 
 
